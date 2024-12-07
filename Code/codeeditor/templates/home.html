@@ -1,0 +1,135 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <title>Code Fusion - Home</title>
+    <meta name="Generator" content="Cocoa HTML Writer">
+    <meta name="CocoaVersion" content="2487.7">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #50e3c2;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 30px; /* Adjust font size if needed */
+            font-weight: bold;
+            transition: transform 0.3s ease-in-out; /* Add transition for smooth flipping */
+        }
+
+        .logo img {
+            width: 100px; /* Adjust width as desired */
+            height: 10px;
+        }
+
+        .logo:hover {
+            transform: scaleX(-1); /* Flip the logo horizontally */
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav li {
+            margin-left: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column; /* Arrange elements vertically */
+            align-items: center;
+            padding: 100px 20px;
+        }
+
+        .text-section {
+            text-align: center; /* Center text horizontally */
+            margin-bottom: 20px; /* Add spacing between text and image */
+        }
+
+        .laptop-image {
+            width: 400px;
+            height: auto;
+        }
+
+        .home-nav {
+            margin-top: 20px;
+            text-align: center; /* Center the welcome message */
+        }
+
+        .home-nav ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .home-nav ul li {
+            display: inline;
+            margin-right: 15px;
+        }
+
+        .home-nav ul li a {
+            color: #50e3c2;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .typing-text {
+            white-space: nowrap; /* Prevent wrapping */
+            overflow: hidden; /* Hide overflowing text */
+            animation: typing 4s steps(100) infinite;
+        }
+
+        @keyframes typing {
+            0% { width: 0; }
+            100% { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            Code Fusion
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/codeeditor/register/">Register</a></li>
+                <li><a href="/codeeditor/login/">Login</a></li>
+                <li><a href="/codeeditor/about/">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="text-section">
+            <h1 class="typing-text">Code Compile With Ease</h1>
+        </div>
+        <img src="{% static 'images/img.png' %}" alt="Laptop with code" class="laptop-image">
+        <div class="home-nav">
+            <h1>Welcome to the Code Editor!</h1>
+        </div>
+    </main>
+
+    <script>

@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Code Fusion</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Change to column for vertical layout */
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+        }
+
+        header {
+            background-color: #50e3c2;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav li {
+            margin-left: 20px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            flex-grow: 1; /* Allow main to expand and fill remaining space */
+        }
+
+        .container h1 {
+            font-size: 24px;
+            color: #333;
+            text-align: center;
+        }
+
+        .container form {
+            width: 100%;
+        }
+
+        .container label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #50e3c2;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .container button:hover {
+            background-color: #45d1af;
+        }
+
+        .container p {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .container a {
+            color: #50e3c2;
+            text-decoration: none;
+        }
+
+        .container a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            Code Fusion
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/codeeditor/register/">Register</a></li>
+                <li><a href="/codeeditor/login/">Login</a></li>
+                <li><a href="/codeeditor/about/">About</a></li>
+                <li><a href="/" class="text-blue-500 hover:underline">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+
+
+            <h1>Collaborative Code Editor</h1>
+
+            <div class="bg-green-100 p-8 mt-8 rounded-lg shadow-lg">
+                <h2 class="text-center text-2xl font-bold mb-4">Login</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+
+                    <button type="submit">LOGIN</button>
+                </form>
+
+                <p>Don't have an account?
+                    <a href="{% url 'register' %}">Register</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

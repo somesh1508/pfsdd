@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Code Fusion</title>
+
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        /* Extra styling for the second part (About Code Editor) */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h3 {
+            color: #333;
+            font-size: 1.25rem;
+            margin-top: 1.5rem;
+        }
+        ul {
+            list-style: disc;
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        ul li {
+            margin-bottom: 0.5rem;
+        }
+        a {
+            color: #50e3c2;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="bg-gray-200"> <!-- Set single background color for the entire page -->
+
+  <!-- Header Section -->
+  <header class="bg-green-300 p-4 flex justify-between items-center">
+      <div class="logo">
+          <a href="/" class="text-2xl font-bold text-white">Code Fusion</a>
+      </div>
+      <nav>
+          <ul class="flex space-x-4">
+              <li><a href="/codeeditor/register/" class="text-white">Register</a></li>
+              <li><a href="/codeeditor/login/" class="text-white">Login</a></li>
+              <li><a href="/codeeditor/about/" class="text-white">About</a></li>
+          </ul>
+      </nav>
+  </header>
+
+  <!-- About Us Section -->
+  <div class="flex flex-col md:flex-row bg-gray-200 p-8"> <!-- Kept the background as gray -->
+      <div class="md:w-1/2">
+          <h2 class="text-xl font-bold mb-4">About Us</h2>
+          <p class="text-lg mb-4">At CodeFusion, we aspire to change the path one takes to be an engineer. We aim to provide a smart and guided learning experience and also help prepare for tech interviews.</p>
+      </div>
+      <div class="md:w-1/2 flex justify-center items-center">
+          <img alt="Illustration of a person working on a laptop with tech-related icons around" class="h-64" src="{% static 'images/img_4.png' %}" width="300"/>
+      </div>
+  </div>
+
+  <!-- Get Involved Section -->
+  <div class="p-8 bg-gray-200">
+      <h2 class="text-xl font-bold mb-4">Get Involved!!</h2>
+      <p class="text-lg">If you would like to contribute or have suggestions for improvements, feel free to reach out!</p>
+  </div>
+
+  <!-- About Code Editor Section -->
+  <div class="p-8 bg-gray-200"> <!-- Changed to single color -->
+      <h2 class="text-xl font-bold mb-4">About Code Editor</h2>
+      <p>Welcome to the Code Editor project! This application is designed for collaborative coding, allowing multiple users to write and run code in real-time across various programming languages.</p>
+
+      <h3>Get Involved:</h3>
+      <p>If you would like to contribute or have suggestions for improvements, feel free to reach out!</p>
+
+      <p><a href="/" class="text-blue-500 hover:underline">Back to Home</a></p>
+  </div>
+
+</body>
+</html>

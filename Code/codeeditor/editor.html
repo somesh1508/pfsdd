@@ -1,0 +1,240 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VS Code-Like Code Editor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/python/python.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0; /* Light background for better contrast */
+        }
+        header {
+            background-color: #50e3c2; /* Header color */
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 30px;
+            font-weight: bold;
+        }
+        #container {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            width: 100%;
+            padding: 20px; /* Add some padding around the container */
+        }
+        #editor {
+            height: 300px;
+            border-bottom: 1px solid #ccc;
+        }
+        #terminal {
+            height: 200px;
+            background-color: #fff; /* Terminal background color */
+            padding: 10px;
+            border: 1px solid #ccc; /* Terminal border */
+            overflow-y: auto;
+        }
+        #output {
+            width: 30%;
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-left: 10px;
+            height: 500px; /* Match the height of the editor and terminal */
+            overflow-y: auto;
+            border: 1px solid #ccc; /* Output section border */
+        }
+        #user-input-section {
+            display: none;
+            margin-top: 10px;
+        }
+        #run-button, #logout-button, #about-button, #ai-button {
+            margin-top: 10px;
+            margin-right: 5px;
+            background-color: #50e3c2; /* Button color */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px; /* Rounded corners */
+        }
+        #run-button:hover, #logout-button:hover, #about-button:hover, #ai-button:hover {
+            background-color: #44b9a6; /* Darker shade on hover */
+        }
+        #header {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background-color: #f9f9f9; /* Light header background */
+        }
+        #language-select {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+        /* Add some styling for the user input section */
+        #user-input-section input {
+            padding: 10px;
+            width: calc(100% - 120px); /* Adjust width based on button size */
+            margin-right: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
+    <script>
+        let editor;
+
+        function initEditor() {
+            editor = CodeMirror(document.getElementById("editor"), {
+                lineNumbers: true,
+                mode: "python",
+                theme: "default",
+                extraKeys: {"Tab": (cm) => { cm.replaceSelection("    "); }} // Add indentation for Tab key
+            });
+        }
+
+        function showInputSection() {
+            const userInputSection = document.getElementById('user-input-section');
+            userInputSection.style.display = 'block'; // Show the user input section
+        }
+
+        function checkForInputRequirement(code) {
+            return code.includes('input(');
+        }
+
+        function submitCode() {
+            const code = editor.getValue();
+            const userInput = document.getElementById('user-input').value;
+            const language = document.getElementById('language-select').value;
+
+            if (checkForInputRequirement(code)) {
+                showInputSection();
+            } else {
+                runCode(code, userInput, language);
+            }
+        }
+
+        function runCode(code, userInput, language) {
+            $.ajax({
+                type: "POST",
+                url: "{% url 'code_editor' %}",  // Replace with your actual URL
+                data: {
+                    code: code,
+                    language: language,
+                    user_input: userInput,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    $('#terminal').html(`
+                        <h3>Terminal Output:</h3>
+                        <pre>${response.output}</pre>
+                    `);
+                },
+                error: function(xhr, status, error) {
+                    $('#terminal').html(`<pre>Error: ${xhr.responseText}</pre>`);
+                }
+            });
+        }
+
+        function askForAiSuggestion() {
+            const code = editor.getValue();
+            const language = document.getElementById('language-select').value;
+
+            $.ajax({
+                type: "POST",
+                url: "{% url 'get_ai_suggestion' %}",  // Add a new URL for AI suggestions
+                data: {
+                    code: code,
+                    language: language,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    // Show AI suggestions in a pop-up window
+                    const aiPopup = window.open("", "AI Suggestions", "width=600,height=400");
+                    aiPopup.document.write(`
+                        <h3>AI Suggestions:</h3>
+                        <pre>${response.ai_suggestion}</pre>
+                        <button onclick="window.close()">Close</button>
+                    `);
+                },
+                error: function(xhr, status, error) {
+                    $('#output').html(`<pre>Error: ${xhr.responseText}</pre>`);
+                }
+            });
+        }
+
+        function handleUserInput() {
+            const code = editor.getValue();
+            const userInput = document.getElementById('user-input').value;
+            const language = document.getElementById('language-select').value;
+            runCode(code, userInput, language); // Submit code with user input
+        }
+
+        function logout() {
+            window.location.href = "{% url 'logout' %}"; // Redirect to the logout URL
+        }
+
+        function goToAbout() {
+            window.location.href = "{% url 'about' %}"; // Redirect to the about page URL
+        }
+    </script>
+</head>
+<body onload="initEditor()">
+    <header>
+        <div class="logo">
+            Code Fusion
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/codeeditor/register/">Register</a></li>
+                <li><a href="/codeeditor/login/">Login</a></li>
+                <li><a href="/codeeditor/about/">About</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div id="header">
+        <div>
+            <button id="run-button" onclick="submitCode()">Run Code</button>
+            <button id="ai-button" onclick="askForAiSuggestion()">Ask AI for Suggestions</button>
+            <button id="logout-button" onclick="logout()">Logout</button>
+            <button id="about-button" onclick="goToAbout()">About Me</button>
+        </div>
+        <div>
+            <label for="language-select">Select Language:</label>
+            <select id="language-select">
+                <option value="Python">Python</option>
+                <option value="JavaScript">JavaScript</option>
+                <option value="Java">Java</option>
+                <option value="C">C</option>
+                <option value="C++">C++</option>
+            </select>
+        </div>
+    </div>
+    <div id="container">
+        <div id="editor"></div>
+        <div id="terminal">
+            <h3>Terminal Output:</h3>
+            <pre></pre>
+        </div>
+    </div>
+    <div id="output">
+        <h3>User Input:</h3>
+        <div id="user-input-section">
+            <label for="user-input">Enter Input:</label>
+            <input type="text" name="user_input" id="user-input" placeholder="Enter your input here...">
+            <button type="button" onclick="handleUserInput()">Submit Input</button>
+        </div>
+    </div>
+</body>
+</html>
